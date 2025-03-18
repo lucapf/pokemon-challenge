@@ -1,0 +1,27 @@
+@startuml PokemonModel
+
+class Pokemon {
+    + int: id
+    + String: name
+    + int: attack
+    + int: speed
+    + List[str]: attack_moves 
+}
+class Battle{
+    + id: int 
+    + string: player1
+    + string: player2
+    + int: attackPlayer1
+    + int: attackPlayer2
+    + winner: Pokemon
+    + BattleMove[]: moves
+}
+
+class BattleMove{
+    + Move: move
+    + Pokemon: attacker
+    + Pokemon: target
+}
+Battle --* BattleMove
+
+@enduml

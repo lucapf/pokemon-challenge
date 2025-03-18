@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript"src="/static/actions.js" ></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+<script type="text/javascript"src="/static/actions.js" ></script>
+
+<link rel="stylesheet" href="/static/loader.css">
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+</style>
+</head>
+<script>
+  $(document).ready(function (){
+      document.getElementById("Pokemon1Form").addEventListener('keypress', function(e){
+          if(e.key === 'Enter'){
+            e.preventDefault()
+            findPokemon1();
+          }
+      })
+    document.getElementById("Pokemon2Form").addEventListener('keypress', function(e){
+          if(e.key === 'Enter'){
+            e.preventDefault()
+            findPokemon2();
+          }
+      })
+
+  })
+</script>
+<body class="w3-light-grey">
+    <div class="w3-container w3-center w3-text-grey" style="width: 100%;">
+      <h1>Pokemon Battle Simulation</h1>
+    </div>
+<!-- Page Container -->
+<div class="w3-half">
+  <div class="w3-content w3-margin" id="Pokemon1Form" style="max-width:1400px;" >
+        <div class="w3-row-padding"> 
+        <div class="w3-white w3-text-grey w3-card-4">
+            <div class="w3-container w3-blue">
+            <h2>Pokemon </h2>
+            </div>
+            <form class="w3-container">
+              <p>
+                <label id="pokemon1.label.name">Name</label>
+                <input class="w3-input" id="Pokemon1Name" type="text"></p>
+              <p>
+                <button class="w3-btn w3-blue" type="button" onclick="findPokemon1()">Find!</button>
+              </p>
+              </form>
+              <div class="w3-container w3-margin-bottom" id="Pokemon1Card">
+              </div>
+        </div>
+    </div> 
+    </div>
+</div>
+<div class="w3-half">
+  <div class="w3-content w3-margin" id="Pokemon2Form" style="max-width:1400px;">
+        <div class="w3-row-padding"> 
+        <div class="w3-white w3-text-grey w3-card-4">
+            <div class="w3-container w3-red">
+            <h2>Pokemon </h2>
+            </div>
+            <form class="w3-container">
+              <p>
+                <label>Name</label>
+                <input class="w3-input" id="Pokemon2Name" type="text"></p>
+              <p>
+                <button class="w3-btn w3-red" type="button" onclick="findPokemon2()">Find!</button>
+              </p>
+              </form>
+
+              <div class="w3-container w3-margin-bottom" id="Pokemon2Card">
+              </div>
+        </div>
+        </div> 
+  </div>
+</div>
+<div class="w3-container w3-center w3-text-grey" style="width: 100%;">
+      <button type="button" class="w3-btn w3-green" id="startBattleButton" onclick="startBattle()">Battle</button>
+      <div id="battleLog" class="w3-container w3-text-grey" styl="width: 100%">
+
+      </div>
+</div>
+</body>
+</html>

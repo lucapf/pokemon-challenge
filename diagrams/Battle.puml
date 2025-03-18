@@ -1,0 +1,12 @@
+@startuml  Battle
+start
+repeat 
+    :system choose the attacker;
+    :system randomly choose the attack move;
+    :system calculate the damage of the defender;
+repeat while (both players have attack points) is (yes) not(no)
+    :the one without attack points is the looser;
+    :the syste stores the battle;
+stop
+
+@enduml

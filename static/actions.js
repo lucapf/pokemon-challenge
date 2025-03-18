@@ -1,0 +1,45 @@
+
+function findPokemon1(){
+  findPokemon($("#Pokemon1Name").val(), "#Pokemon1Card")
+}
+
+function findPokemon2(){
+  findPokemon($("#Pokemon2Name").val(), "#Pokemon2Card")
+
+}
+
+function findPokemon(name, cardId){
+  $(cardId).html("<div class='loader w3-center'></div>")
+  $.ajax({
+    url: `/api/v1/pokemon/${name}`,
+    type: "GET",
+    success: function(data){
+      $(cardId).html(data)
+    },
+    error: function(){
+      console.log(`Pokemon ${name} not found`)
+      $(cardId).html(`Pokemon ${name} not found`)
+    }
+  })
+}
+
+function startBattle(){
+  pokemon1 = $("#Pokemon1Name").val()
+  pokemon2 = $("#Pokemon2Name").val()
+  $("#startBattleButton").disabled = true
+  $.ajax({
+    url: "/api/v1/battle",
+    type: "POST",
+    data: JSON.stringify({pokemon1: pokemon1, pokemon2: pokemon2}),
+    success: function(data){
+      $("#battleLog").html(data)
+    },
+    error: function(){
+      console.log("Error starting battle")
+      $("#battleLog").html("something went wrong, pls try again")
+    },
+    finally: function(){
+      $("#startBattleButton").disabled = false
+    }
+  })
+}
