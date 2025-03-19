@@ -22,10 +22,12 @@ class Move(object):
 
 
 class Attack(object):
-    def __init__(self, battle_id: int, attacker: str, pokemon_1_hp: int,pokemon_2_hp: int ,move: str , damage: int):
+    def __init__(self, battle_id: int, attacker: str, pokemon_1_hp: int,pokemon_2_hp: int ,
+                 move: str , attack_damage: int, defense_damage: int):
         self.battle_id: int = battle_id
         self.attacker: Pokemon = attacker
         self.pokemon_1_hp: int = pokemon_1_hp 
         self.pokemon_2_hp: int = pokemon_2_hp 
         self.move: str = move
-        self.damage: int = damage
+        self.attack_damage: int = attack_damage
+        self.defense_damage: int = defense_damage

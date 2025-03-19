@@ -15,7 +15,8 @@ create table if not exists attack(
     pokemon_1_hp int not null,
     pokemon_2_hp int not null,
     attacker varchar(150) not null,
-    damage int not null,
+    attack_damage int not null,
+    defense_damage int not null,
     move varchar(150) not null,
     created_at timestamp not null default now()
 );

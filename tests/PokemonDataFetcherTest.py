@@ -3,30 +3,14 @@ from unittest.mock import patch
 import json
 from app import PokemonDataFetcher
 from app import Utils
+from tests import UtilsTest
 from app.Models import Pokemon
 from typing import Dict
-
-def getAttackData(path: str) ->tuple[int, Dict| None] :
-    with open("./test-data/attack.json", "r") as stat_file:
-        return 200, json.load(stat_file)
-
-def getSpecialAttackData(path: str) ->tuple[int, Dict| None] :
-    with open("./test-data/special-attack.json", "r") as stat_file:
-        return 200, json.load(stat_file)
-
-
-def getAttackData(path: str) ->tuple[int, Dict| None] :
-    with open("./test-data/attack.json", "r") as stat_file:
-        return 200, json.load(stat_file)
-
-def getPokemonData(path: str) ->tuple[int, Dict| None] :
-    with open("./test-data/bubsaur.json", "r") as bubsaur_file:
-        return 200, json.load(bubsaur_file)
 
 
 class PokemonDataFetcherTest(unittest.TestCase):
     def test_load_cached_attack_moves(self):
-        with unittest.mock.patch('app.Utils.get', getAttackData):
+        with unittest.mock.patch('app.Utils.get', UtilsTest.get_static_data):
             attack_moves = PokemonDataFetcher.attack_moves()
             self.assertIsNotNone(attack_moves)
             self.assertEqual(45, len(attack_moves))
@@ -34,7 +18,7 @@ class PokemonDataFetcherTest(unittest.TestCase):
             self.assertEqual(2, attack_moves["shell-smash"])
 
     def test_load_cached_special_attack_moves(self):
-        with unittest.mock.patch('app.Utils.get', getSpecialAttackData):
+        with unittest.mock.patch('app.Utils.get',UtilsTest.get_static_data): 
             attack_moves = PokemonDataFetcher.attack_special_moves()
             self.assertIsNotNone(attack_moves)
             self.assertEqual(41, len(attack_moves))
@@ -42,7 +26,7 @@ class PokemonDataFetcherTest(unittest.TestCase):
             self.assertEqual(1, attack_moves["growth"])
     
     def test_load_pokemon_bubsaur(self):
-        with unittest.mock.patch('app.Utils.get', getPokemonData):
+        with unittest.mock.patch('app.Utils.get',UtilsTest.get_static_data): 
             pokemon: Pokemon = PokemonDataFetcher.get_pokemon("bubsaur")
             self.assertIsNotNone(pokemon)
             self.assertEqual("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",pokemon.image)
@@ -52,4 +36,13 @@ class PokemonDataFetcherTest(unittest.TestCase):
             self.assertEqual(49, pokemon.attack)
             self.assertEqual(45, pokemon.hp)
             self.assertEqual(45, pokemon.speed)
+
+    def test_if_pokemon_name_is_not_valid_then_InvalidPokemonNameError_occur(self):
+        with self.assertRaises(Utils.InvalidPokemonNameError) as context:
+            PokemonDataFetcher.get_pokemon("bubsauri-1~")
+        self.assertEqual("Name must be alphanumeric or -",str(context.exception))
+        try:
+            PokemonDataFetcher.get_pokemon("12bUbsauri-1")
+        except Utils.InvalidPokemonNameError as context:
+            self.fail("should not raise an exception")
 

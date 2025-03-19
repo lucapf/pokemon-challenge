@@ -7,13 +7,15 @@ import json
 from app import Utils
 
 def get_pokemon(path: str) ->tuple[int, dict| None] :
-        if path == "/stat/2":
-            with open("./test-data/attack.json", "r") as stat_file:
-                return 200, json.load(stat_file)
-        if path == "/stat/4":
-            with open("./test-data/special-attack.json", "r") as stat_file:
-                return 200, json.load(stat_file)
         name = path.split("/")[-1]
+        if path == "/stat/2":
+            name = "attack"
+        elif path == "/stat/3":
+            name = "defense"
+        elif path == "/stat/4":
+            name = "special-attack"
+        elif path == "/stat/5":
+            name = "special-defense"
         with open(f"./test-data/{name}.json", "r") as pokemon_file:
             return 200, json.load(pokemon_file)
 

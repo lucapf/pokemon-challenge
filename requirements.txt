@@ -1,5 +1,7 @@
-fastapi
+fastapi[standard]
+requests
 jinja2
 psycopg2-binary
+psycopg
 python-dotenv
 loguru

@@ -1,3 +1,4 @@
 #!/bin/bash
-docker build -f Dockerfile.backend -t pokemon-backend:0.0.1 .
-docker build -f Dockerfile.database -t pokemon-database:0.0.1 .
+docker buildx build -f Dockerfile.backend -o type=docker -t pokemon-backend:0.0.1 . 
+docker buildx build -f Dockerfile.database -o type=docker -t pokemon-database:0.0.1 .
+docker-compose up

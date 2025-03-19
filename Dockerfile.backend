@@ -9,6 +9,8 @@ COPY ./app /application/app
 COPY ./static /application/static
 COPY ./templates /application/templates
 COPY main.py /application/main.py
+RUN apt install libpq-dev 
 COPY requirements.txt /application/requirements.txt
-RUN /usr/local/bin/pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
 CMD ["fastapi", "run","/application/main.py", "--port", "80"]

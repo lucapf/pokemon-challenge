@@ -1,6 +1,5 @@
 import psycopg2 as psycopg
 import os
-from dotenv import load_dotenv
 from psycopg import Connection
 from app.Models import Pokemon, Attack
 from app import PokemonDataFetcher
@@ -43,17 +42,16 @@ def end_game(conn:Connection, battle_id: int, winner: str|None):
 
 def save_attack(attack: Attack, conn: Connection) :
     with conn.cursor() as cur:
-        cur.execute("INSERT INTO attack(battle_id, pokemon_1_hp, pokemon_2_hp,attacker,move , damage)" \
-                    " VALUES (%s, %s, %s, %s, %s, %s)", \
-                (attack.battle_id, attack.pokemon_1_hp, attack.pokemon_2_hp, attack.attacker, attack.move, attack.damage))
+        cur.execute("INSERT INTO attack(battle_id, pokemon_1_hp, pokemon_2_hp,attacker,move , attack_damage, defense_damage)" \
+                    " VALUES (%s, %s, %s, %s, %s, %s, %s)", \
+                (attack.battle_id, attack.pokemon_1_hp, 
+                 attack.pokemon_2_hp, attack.attacker, attack.move, attack.attack_damage, attack.defense_damage))
 
 def choose_attacker(pokemon1:Pokemon, pokemon2:Pokemon) -> {Pokemon, Pokemon}:
     """choose the attacker, the one with the highest speed have more chance to attack first"""
     threshold = pokemon1.speed / (pokemon1.speed + pokemon2.speed)
     value = random.random()
-    print(f"threshold: {threshold} value: {value}")
     attacker= pokemon1 if random.random() < threshold else pokemon2
-    print("attacker", attacker.name)
     return attacker 
 
 def choose_special_attack(attacker: Pokemon, defender:Pokemon) -> bool:
@@ -115,18 +113,25 @@ def attack(p1: str, p2:str) -> {str, List[Attack]}:
         while pokemon1.hp > 0 and pokemon2.hp > 0 and count < 200:
             count += 1
             attacker = choose_attacker(pokemon1, pokemon2)
-            defender = pokemon2 if  attacker.name == pokemon1.name else pokemon1
+            defender = pokemon2 if attacker.name == pokemon1.name else pokemon1
             special_attack = choose_special_attack(attacker, defender)
             move = choose_attak_move(attacker, special_attack)
-            change = PokemonDataFetcher.attack_special_moves()[move]if special_attack else PokemonDataFetcher.attack_moves()[move]
-            if change < 0:
-               defender.hp += change 
+            if special_attack:
+                attack_change = PokemonDataFetcher.attack_special_moves()[move]
+            else:
+                attack_change = PokemonDataFetcher.attack_moves()[move]
+            defender.hp += attack_change if attack_change < 0 else 0 # decrease affects hp only
             special_defence = choose_special_defense(defender, attacker)
             move = choose_defense_move(attacker, special_defence)
-            change = PokemonDataFetcher.defense_special_moves()[move] if special_defence else PokemonDataFetcher.defense_moves()[move]
-            if change < 0:
-                attacker.hp += change   
-            attack_moves.append(Attack(battle_id, attacker.name, pokemon1.hp, pokemon2.hp,move , change))
+            if special_defence:
+                defense_change = PokemonDataFetcher.defense_special_moves()[move] 
+            else:
+                defense_change = PokemonDataFetcher.defense_moves()[move]
+            attacker.hp += defense_change if defense_change < 0 else 0 # decrease  affect hp only
+            attack_moves.append(Attack(battle_id, attacker.name, 
+                                       pokemon1.hp, pokemon2.hp,move , 
+                                       attack_change,
+                                       defense_change))
             save_attack(attack_moves[-1], conn)
         winner = pokemon1 if pokemon2.hp == 0 else pokemon2 if pokemon1.hp == 0 else None
         end_game(conn, battle_id, winner.name if winner is not None else "no winner")

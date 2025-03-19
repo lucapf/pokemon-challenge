@@ -10,15 +10,16 @@ function findPokemon2(){
 
 function findPokemon(name, cardId){
   $(cardId).html("<div class='loader w3-center'></div>")
+  encoded_name = encodeURIComponent(name)
   $.ajax({
     url: `/api/v1/pokemon/${name}`,
     type: "GET",
     success: function(data){
       $(cardId).html(data)
     },
-    error: function(){
-      console.log(`Pokemon ${name} not found`)
-      $(cardId).html(`Pokemon ${name} not found`)
+    error: function(jqXHR, textStatus, errorThrown){
+      console.log(`error getting detail for Pokemon ${name} status: ${textStatus} error: ${errorThrown}`)
+      $(cardId).html(jqXHR.responseText)
     }
   })
 }

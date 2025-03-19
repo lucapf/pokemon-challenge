@@ -3,65 +3,37 @@ version: '3.9'
 services:
 
   db:
-    image: postgresql_reveal:0.0.1
+    image: pokemon-database:0.0.1
     restart: always
     shm_size: 128mb
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER:  dashboard
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dashboard
+      POSTGRES_USER: pokemon
+      POSTGRES_PASSWORD: pokemon
+      POSTGRES_DB: pokemon
 #    ports:
 #      - 5434:5432
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8085:8080
-    depends_on:
-      db:
-        condition: service_started
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 8085:8080
+#    depends_on:
+#      db:
+#        condition: service_started
 
   backend:
-    image: reveal-backend:0.0.1
+    image: pokemon-backend:0.0.1
     environment:
-      DBNAME: dashboard
-      PG_HOST: db 
-      PG_USER: dashboard
-      PG_PASSWORD: password
+      DBNAME: pokemon
+      PG_HOST: db
+      PG_USER: pokemon
+      PG_PASSWORD: pokemon
       PG_PORT: 5432
-#    ports:
-#      - 8000:80
+    ports:
+      - 8000:80
     depends_on:
       db:
         condition: service_started
-
-  reveal-manager:
-    image: reveal-manager:0.0.1
-    environment:
-      PGUSER: dashboard
-      PGPASSWORD: password
-      PGHOST: db
-      PGPORT: 5432
-      PGDATABASE: dashboard
-    ports:
-      - 3000:3000
-    depends_on:
-      db:
-        condition: service_started
-  ingress:
-    image: auth-proxy:0.0.2
-    environment:
-      # FORWARD_HOST: www.google.com
-      # FORWARD_PORT: 80
-      FORWARD_HOST: reveal-manager 
-      FORWARD_PORT: 3000
-    ports:
-      - 443:443
-    depends_on:
-      reveal-manager:
-        condition: service_started
-
-

@@ -2,14 +2,19 @@
 <div class="w3-card-4">
     <h3>winner: {{ winner }}</h3>
     <table>
-        <tr><th>Attaker</th><th>{{ pokemon1 }} hp</th><th>{{ pokemon2 }} hp</th><th>move</th><th>damage</th></tr>
+        <tr>
+            <th>Attaker</th><th>{{ pokemon1 }} hp</th>
+            <th>{{ pokemon2 }} hp</th><th>move</th>
+            <th>attack damage</th><th>defense damage</th>
+        </tr>
     {%for a in attacks%}
     <tr>
         <td>{{a.attacker}}</td>
         <td>{{a.pokemon_1_hp}}</td>
         <td>{{a.pokemon_2_hp}}</td>
         <td>{{a.move}}</td>
-        <td>{{a.damage}}</td>
+        <td>{{a.attack_damage}}</td>
+        <td>{{a.defense_damage}}</td>
     </tr>
     {%endfor%}
     </table>

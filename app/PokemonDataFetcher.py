@@ -40,6 +40,7 @@ def defense_special_moves() -> Dict[str,int]|None:
 
 @cache
 def get_pokemon(name: str) -> Pokemon:
+    Utils.validate_pokemon_name(name)
     code, data = Utils.get(f'/pokemon/{name}')
     if code != 200 or data is None:
         return None
