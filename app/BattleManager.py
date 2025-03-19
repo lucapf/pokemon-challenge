@@ -42,10 +42,11 @@ def end_game(conn:Connection, battle_id: int, winner: str|None):
 
 def save_attack(attack: Attack, conn: Connection) :
     with conn.cursor() as cur:
-        cur.execute("INSERT INTO attack(battle_id, pokemon_1_hp, pokemon_2_hp,attacker,move , attack_damage, defense_damage)" \
-                    " VALUES (%s, %s, %s, %s, %s, %s, %s)", \
+        cur.execute("INSERT INTO attack(battle_id, pokemon_1_hp, pokemon_2_hp,attacker," \
+                    "attack_move, defense_move , attack_damage, defense_damage)" \
+                    " VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", \
                 (attack.battle_id, attack.pokemon_1_hp, 
-                 attack.pokemon_2_hp, attack.attacker, attack.move, attack.attack_damage, attack.defense_damage))
+                 attack.pokemon_2_hp, attack.attacker, attack.attack_move,attack.defense_move, attack.attack_damage, attack.defense_damage))
 
 def choose_attacker(pokemon1:Pokemon, pokemon2:Pokemon) -> {Pokemon, Pokemon}:
     """choose the attacker, the one with the highest speed have more chance to attack first"""
@@ -115,21 +116,22 @@ def attack(p1: str, p2:str) -> {str, List[Attack]}:
             attacker = choose_attacker(pokemon1, pokemon2)
             defender = pokemon2 if attacker.name == pokemon1.name else pokemon1
             special_attack = choose_special_attack(attacker, defender)
-            move = choose_attak_move(attacker, special_attack)
+            attack_move = choose_attak_move(attacker, special_attack)
             if special_attack:
-                attack_change = PokemonDataFetcher.attack_special_moves()[move]
+                attack_change = PokemonDataFetcher.attack_special_moves()[attack_move]
             else:
-                attack_change = PokemonDataFetcher.attack_moves()[move]
+                attack_change = PokemonDataFetcher.attack_moves()[attack_move]
             defender.hp += attack_change if attack_change < 0 else 0 # decrease affects hp only
             special_defence = choose_special_defense(defender, attacker)
-            move = choose_defense_move(attacker, special_defence)
+            defense_move = choose_defense_move(attacker, special_defence)
             if special_defence:
-                defense_change = PokemonDataFetcher.defense_special_moves()[move] 
+                defense_change = PokemonDataFetcher.defense_special_moves()[defense_move] 
             else:
-                defense_change = PokemonDataFetcher.defense_moves()[move]
+                defense_change = PokemonDataFetcher.defense_moves()[defense_move]
             attacker.hp += defense_change if defense_change < 0 else 0 # decrease  affect hp only
             attack_moves.append(Attack(battle_id, attacker.name, 
-                                       pokemon1.hp, pokemon2.hp,move , 
+                                       pokemon1.hp, pokemon2.hp,
+                                       attack_move, defense_move,
                                        attack_change,
                                        defense_change))
             save_attack(attack_moves[-1], conn)

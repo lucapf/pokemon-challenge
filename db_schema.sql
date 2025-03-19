@@ -17,6 +17,7 @@ create table if not exists attack(
     attacker varchar(150) not null,
     attack_damage int not null,
     defense_damage int not null,
-    move varchar(150) not null,
+    attack_move varchar(150) not null,
+    defense_move varchar(150) not null,
     created_at timestamp not null default now()
 );

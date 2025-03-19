@@ -4,45 +4,51 @@
       <h3>{{ pokemon.name }}</h3>
     </header>
     
-    <div class="w3-container">
-      <p>HP: {{ pokemon.hp}} - speed: {{ pokemon.speed }}</p>
+    <div class="w3-container w3-margin">
+      <h3>HP: {{ pokemon.hp}} - speed: {{ pokemon.speed }}</h3>
       <hr>
-
-      <div class="w3-left w3-container w3-margin" style="width: 150px;">
-      <img src="{{ pokemon.image }}" alt="Avatar" style="width: 150px;" >
-      </div>
-      <div class="w3-left w3-container w3-margin">
-        <h4>Attack moves</h4>
-        <ul>
-       {% for move in pokemon.attack_moves %}
-        <li>{{ move }} ( {{ attacks[move] }} )</li>
-       {% endfor %}
-        </ul>
-      </div>
-       <div class="w3-left w3-container w3-margin">
-        <h4>special Attack moves</h4>
-        <ul>
-       {% for move in pokemon.special_attack_moves%}
-        <li>{{ move }} ( {{ special_attacks[move] }} )</li>
-       {% endfor %}
-        </ul>
-      </div>
-      <div class="w3-left w3-container w3-margin">
-        <h4>defense moves</h4>
-        <ul>
-       {% for move in pokemon.defense_moves%}
-        <li>{{ move }} ( {{ defense[move] }} )</li>
-       {% endfor %}
-        </ul>
-      </div>
-      <div class="w3-left w3-container w3-margin">
-        <h4>special defense moves</h4>
-        <ul>
-       {% for move in pokemon.special_defense_moves%}
-        <li>{{ move }} ( {{ special_defense[move] }} )</li>
-       {% endfor %}
-        </ul>
-      </div>
+      <table  style="width: 100%;">
+        <tr>
+        <td>
+          <div class="w3-left w3-container w3-margin w3-right" style="width: 150px;">
+            <img src="{{ pokemon.image }}" alt="Avatar" style="width: 150px;" >
+          </div>
+        </td> <td>
+          <div class="w3-left w3-container ">
+            <h5>Attack moves</h5>
+            <ul>
+          {% for move in pokemon.attack_moves %}
+            <li>{{ move }} ( {{ attacks[move] }} )</li>
+          {% endfor %}
+            </ul>
+          </div>
+          <div class="w3-left w3-container ">
+            <h5>Special Attack moves</h5>
+            <ul>
+          {% for move in pokemon.special_attack_moves%}
+            <li>{{ move }} ( {{ special_attacks[move] }} )</li>
+          {% endfor %}
+            </ul>
+          </div>
+          <div class="w3-left w3-container ">
+            <h4>defense moves</h4>
+            <ul>
+          {% for move in pokemon.defense_moves%}
+            <li>{{ move }} ( {{ defense[move] }} )</li>
+          {% endfor %}
+            </ul>
+          </div>
+          <div class="w3-left w3-container ">
+            <h4>Special def moves</h4>
+            <ul>
+          {% for move in pokemon.special_defense_moves%}
+            <li>{{ move }} ( {{ special_defense[move] }} )</li>
+          {% endfor %}
+            </ul>
+          </div>
+        </td>
+        </tr>
+        </table>
 
 
     </div>

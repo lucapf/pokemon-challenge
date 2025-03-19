@@ -1,19 +1,31 @@
-
-<div class="w3-card-4">
+<style>
+table {border-collapse:collapse; margin: 6px;} 
+td,th {padding: 6px;font-size: large;}
+th {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+</style>
+<div class="w3-card-4 w3-align-center" >
     <h3>winner: {{ winner }}</h3>
-    <table>
+    <table class="battleResultTable">
         <tr>
-            <th>Attaker</th><th>{{ pokemon1 }} hp</th>
-            <th>{{ pokemon2 }} hp</th><th>move</th>
-            <th>attack damage</th><th>defense damage</th>
+            <th>Attaker</th>
+            <th>{{ pokemon1 }} hp</th>
+            <th>{{ pokemon2 }} hp</th>
+            <th>attack move</th>
+            <th>attack damage</th>
+            <th>defense move</th>
+            <th>defense damage</th>
         </tr>
     {%for a in attacks%}
     <tr>
         <td>{{a.attacker}}</td>
         <td>{{a.pokemon_1_hp}}</td>
         <td>{{a.pokemon_2_hp}}</td>
-        <td>{{a.move}}</td>
+        <td>{{a.attack_move}}</td>
         <td>{{a.attack_damage}}</td>
+        <td>{{a.defense_move}}</td>
         <td>{{a.defense_damage}}</td>
     </tr>
     {%endfor%}
