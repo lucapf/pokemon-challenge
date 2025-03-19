@@ -1,0 +1,7 @@
+@startuml PokemonModel
+object battle{
+    description
+}
+object attack
+battle "1" -- "n" attack
+@enduml
